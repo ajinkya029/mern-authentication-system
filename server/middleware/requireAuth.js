@@ -1,0 +1,26 @@
+import jwt from 'jsonwebtoken';
+
+export function requireAuth(req, res, next) {
+  const token = req.cookies?.token;
+  if (!token) return res.status(401).json({ message: 'Please log in to continue.' });
+
+  try {
+    const payload = jwt.verify(token, process.env.JWT_SECRET);
+    req.userId = payload.sub;
+    next();
+  } catch {
+    res.clearCookie('token', cookieOptions());
+    return res.status(401).json({ message: 'Session expired. Please log in again.' });
+  }
+}
+
+export function cookieOptions() {
+  const production = process.env.NODE_ENV === 'production';
+  return {
+    httpOnly: true,
+    secure: production,
+    sameSite: production ? 'none' : 'lax',
+    path: '/',
+    maxAge: 24 * 60 * 60 * 1000
+  };
+}
