@@ -127,7 +127,7 @@ Make sure you have installed:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/mern-authentication-system.git
+git clone https://github.com/ajinkya029/mern-authentication-system.git
 ```
 
 ```bash
